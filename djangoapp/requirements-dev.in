@@ -1,0 +1,27 @@
+-c requirements.txt
+autoflake
+autopep8
+black
+factory_boy
+flake8
+flake8-bugbear
+freezegun
+importmagic
+ipython
+isort
+jedi
+pep8-naming
+pip-tools
+pre-commit
+pydocstyle
+pytest
+pytest-cov
+pytest-django
+pytest-factoryboy
+python-jose
+pytest-lazy-fixture
+pytest-mock
+requests-mock
+rope
+snapshottest
+yapf
