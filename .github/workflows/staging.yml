@@ -8,7 +8,7 @@ on:
       build_required:
         description: "Build images (true/false)"
         required: true
-        default: false
+        default: "false"
 
 env:
   CONTAINER_REGISTRY: ghcr.io

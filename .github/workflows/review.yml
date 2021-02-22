@@ -6,9 +6,10 @@ on:
       build_required:
         description: "Build images (true/false)"
         required: true
-        default: false
+        default: "false"
       pr_number:
         description: "Pull request number (if redeploy without build) or own number for environment"
+        required: true
 
 env:
   CONTAINER_REGISTRY: ghcr.io
