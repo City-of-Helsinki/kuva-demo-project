@@ -5,10 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       head_ref:
-        description: "Branch where review environment was created from (as in GitHub). Has to be given as the branch is probably removed and no longer available in the branch list."
-        required: true
+        description: "Branch where review environment was created from (as in GitHub). Has to be given as the branch is probably removed and no longer available in the branch list. Can be empty if environment deployed manually"
       pr_number:
-        description: "Pull request number of the environment creator"
+        description: "Own or pull request number of the environment creator"
 
 env:
   KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW }}
