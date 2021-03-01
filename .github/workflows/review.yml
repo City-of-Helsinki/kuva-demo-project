@@ -69,6 +69,6 @@ jobs:
           DOCKER_BUILD_SOURCE: ./${{ matrix.example }}/Dockerfile
           DOCKER_BUILD_CONTEXT: ./${{ matrix.example }}
           DOCKER_IMAGE_NAME: ${{ matrix.example }}
-          PROJECT_NAME: ${{ matrix.service }}
+          PROJECT_NAME: ${{ github.event.repository.name }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
           K8S_SECRET_VERSION: ${{ github.sha }}
