@@ -25,6 +25,7 @@ env:
   K8S_REQUEST_RAM: 200Mi
   K8S_LIMIT_CPU: 500m
   K8S_LIMIT_RAM: 250Mi
+  VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}
 
 jobs:
   build:
@@ -61,14 +62,11 @@ jobs:
           pr_number: ${{ github.event.inputs.pr_number }}
 
       - name: Deploy
-        uses: andersinno/kolga-deploy-action@v2
+        uses: hi-fi/kolga-deploy-action@test
         env:
           DOCKER_BUILD_SOURCE: ./${{ matrix.example }}/Dockerfile
           DOCKER_BUILD_CONTEXT: ./${{ matrix.example }}
           DOCKER_IMAGE_NAME: ${{ matrix.example }}
-          K8S_SECRET_SKIP_DATABASE_CHECK: 1 # No database
           PROJECT_NAME: ${{ matrix.service }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
-          K8S_SECRET_ALLOWED_HOSTS: "*"
-          K8S_SECRET_DEBUG: 1
           K8S_SECRET_VERSION: ${{ github.sha }}
