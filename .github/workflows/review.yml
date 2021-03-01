@@ -27,6 +27,7 @@ env:
   K8S_LIMIT_RAM: 250Mi
   VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}
   VAULT_ADDR: ${{ secrets.VAULT_URL }}
+  VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-review
 
 jobs:
   build:
