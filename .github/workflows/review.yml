@@ -28,6 +28,9 @@ env:
   VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}
   VAULT_ADDR: ${{ secrets.VAULT_URL }}
   VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-review
+  VAULT_KV_VERSION: 2
+
+
 
 jobs:
   build:
@@ -71,3 +74,4 @@ jobs:
           DOCKER_IMAGE_NAME: ${{ matrix.example }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
           K8S_SECRET_VERSION: ${{ github.sha }}
+          VAULT_KV_SECRET_MOUNT_POINT: review
