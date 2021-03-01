@@ -26,6 +26,7 @@ env:
   K8S_LIMIT_CPU: 500m
   K8S_LIMIT_RAM: 250Mi
   VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}
+  VAULT_ADDR: ${{ secrets.VAULT_URL }}
 
 jobs:
   build:
