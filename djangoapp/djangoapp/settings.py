@@ -38,7 +38,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, []),
     DATABASE_URL=(
         str,
-        f"sqlite://{parent_dir}/db.sqlite",
+        "postgres://kuva-demo-project-djangoapp:kuva-demo-project-djangoapp@localhost/kuva-demo-project-djangoapp",
     ),
     NOTIFICATIONS_ENABLED=(bool, False),
     VERSION=(str, None),
@@ -125,7 +125,8 @@ WSGI_APPLICATION = 'djangoapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 DATABASES = {"default": env.db()}
-
+# Ensure postgres engine
+DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
