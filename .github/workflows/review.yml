@@ -72,3 +72,7 @@ jobs:
           K8S_SECRET_ALLOWED_HOSTS: "*"
           K8S_SECRET_DEBUG: 1
           K8S_SECRET_VERSION: ${{ github.sha }}
+          K8S_SECRET_ELASTIC_APM_SERVICE_NAME: ${{ env.REPO_NAME }}
+          K8S_SECRET_ELASTIC_APM_SERVER_URL: http://apm-server-apm-server.apm.svc.cluster.local:8200
+          K8S_SECRET_ELASTIC_APM_ENVIRONMENT: review
+          K8S_SECRET_ELASTIC_APM_DEBUG: "True"
