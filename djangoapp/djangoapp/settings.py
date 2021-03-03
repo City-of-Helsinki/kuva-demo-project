@@ -13,10 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import subprocess
-import django_opentracing
-import opentracing
-
 import environ
+import django_opentracing
 
 checkout_dir = environ.Path(__file__) - 2
 assert os.path.exists(checkout_dir("manage.py"))
@@ -96,7 +94,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django_opentracing.OpenTracingMiddleware',
+    'djangoapp.tracing.middleware.IgnoreTracingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -177,10 +175,12 @@ MEDIA_URL = env("MEDIA_URL")
 STATIC_URL = env("STATIC_URL")
 
 # OpenTracing settings
+
 OPENTRACING_TRACE_ALL = True
-OPENTRACING_TRACED_ATTRIBUTES = ['path', 'method', 'status_code']
-OPENTRACING_TRACER_CALLABLE = 'djangoapp.tracing.tracer'
-# OPENTRACING_TRACING = django_opentracing.DjangoTracing(tracing.tracer)
+OPENTRACING_TRACE_IGNORED = ["/healthz", "/readiness"]
+OPENTRACING_TRACED_ATTRIBUTES = ["META"]
+OPENTRACING_TRACER_CALLABLE = 'djangoapp.tracing.tracer.tracer'
+OPENTRACING_TRACING = django_opentracing.DjangoTracing()
 
 JAEGER_AGENT_HOST = env("JAEGER_AGENT_HOST")
 JAEGER_AGENT_PORT = env("JAEGER_AGENT_PORT")

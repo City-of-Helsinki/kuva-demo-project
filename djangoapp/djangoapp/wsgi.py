@@ -8,9 +8,20 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 """
 
 import os
+from djangoapp.tracing.tracer import tracer
 
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoapp.settings')
 
 application = get_wsgi_application()
+
+
+try:
+    from uwsgidecorators import postfork
+    @postfork
+    def postfork():
+        tracer()
+except:
+    print("No UWSGI loaded, just staring tracer")
+    tracer()

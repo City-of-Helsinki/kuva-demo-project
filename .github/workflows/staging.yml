@@ -19,6 +19,7 @@ env:
   KUBECONFIG_RAW: ${{ secrets.KUBECONFIG_RAW_STAGING }}
   BUILD_ARTIFACT_FOLDER: "build_artifacts"
   SERVICE_ARTIFACT_FOLDER: "service_artifacts"
+  APP_MIGRATE_COMMAND: /app/.prod/on_deploy.sh
   BASE_DOMAIN: ${{ secrets.BASE_DOMAIN_STAGING }}
   K8S_REQUEST_CPU: 2m
   K8S_REQUEST_RAM: 200Mi
@@ -77,3 +78,4 @@ jobs:
           K8S_SECRET_DEBUG: 0
           K8S_SECRET_VERSION: ${{ github.sha }}
           K8S_SECRET_SECRET_KEY: ${{ secrets.DJANGOAPP_SECRET_KEY_STAGING }}
+          K8S_SECRET_JAEGER_AGENT_HOST: ${{ secrets.K8S_SECRET_JAEGER_AGENT_HOST_STAGING }}
