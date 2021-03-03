@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import path
-
+from django.conf import settings
+from django.db import connection
+from django.http import JsonResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,11 +28,12 @@ urlpatterns = [
 # Kubernetes liveness & readiness probes
 #
 def healthz(*args, **kwargs):
-    return HttpResponse(status=200)
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        return JsonResponse({ "message": "OK"}, status=200)
+    except Exception as ex:
+        return JsonResponse({ "error": str(ex) }, status=500)
 
 
-def readiness(*args, **kwargs):
-    return HttpResponse(status=200)
-
-
-urlpatterns += [path("healthz", healthz), path("readiness", readiness)]
+urlpatterns += [path("healthz", healthz), path("readiness", healthz)]

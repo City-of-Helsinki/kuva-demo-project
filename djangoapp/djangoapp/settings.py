@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import subprocess
-import sys
+import django_opentracing
+import opentracing
 
 import environ
 
@@ -38,7 +39,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, []),
     DATABASE_URL=(
         str,
-        f"sqlite://{parent_dir}/db.sqlite",
+        "postgres://kuva-demo-project:kuva-demo-project@localhost/kuva-demo-project",
     ),
     NOTIFICATIONS_ENABLED=(bool, False),
     VERSION=(str, None),
@@ -51,7 +52,12 @@ env = environ.Env(
     SESSION_COOKIE_SECURE=(bool, None),
     USE_X_FORWARDED_HOST=(bool, None),
     CSRF_TRUSTED_ORIGINS=(list, []),
+    JAEGER_AGENT_HOST=(str, "jaeger"),
+    JAEGER_AGENT_PORT=(int, 6831),
+    JAEGER_SERVICE_NAME=(str, "kuva-demo-project-djangoapp"),
+    JAEGER_AGENT_LOGGING=(bool, True),
 )
+
 if os.path.exists(env_file):
     env.read_env(env_file)
 
@@ -86,9 +92,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_opentracing',
 ]
 
 MIDDLEWARE = [
+    'django_opentracing.OpenTracingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -122,6 +130,8 @@ WSGI_APPLICATION = 'djangoapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 DATABASES = {"default": env.db()}
+# Ensure postgres engine
+DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql"
 
 
 # Password validation
@@ -165,3 +175,14 @@ MEDIA_ROOT = var_root("media")
 STATIC_ROOT = var_root("static")
 MEDIA_URL = env("MEDIA_URL")
 STATIC_URL = env("STATIC_URL")
+
+# OpenTracing settings
+OPENTRACING_TRACE_ALL = True
+OPENTRACING_TRACED_ATTRIBUTES = ['path', 'method', 'status_code']
+OPENTRACING_TRACER_CALLABLE = 'djangoapp.tracing.tracer'
+# OPENTRACING_TRACING = django_opentracing.DjangoTracing(tracing.tracer)
+
+JAEGER_AGENT_HOST = env("JAEGER_AGENT_HOST")
+JAEGER_AGENT_PORT = env("JAEGER_AGENT_PORT")
+JAEGER_AGENT_LOGGING = env("JAEGER_AGENT_LOGGING")
+JAEGER_SERVICE_NAME = env("JAEGER_SERVICE_NAME")

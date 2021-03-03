@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  postgres:
+    image: helsinkitest/postgis:11-2.5-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_USER: kuva-demo-project
+      POSTGRES_PASSWORD: kuva-demo-project
+      POSTGRES_DB: kuva-demo-project
+    ports:
+      - 5436:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    container_name: kuva-demo-project-db
+
+  djangoapp:
+    build:
+      context: djangoapp
+      target: development
+    env_file:
+      - docker-compose.env.yml
+    environment:
+      DATABASE_URL: postgres://kuva-demo-project:kuva-demo-project@kuva-demo-project-db/kuva-demo-project
+      DATABASE_HOST: "kuva-demo-project-db"
+    volumes:
+      - ./djangoapp:/app
+      - django-media-volume:/var/media/
+    ports:
+      - "8081:8000"
+    depends_on:
+      - postgres
+    container_name: kuva-demo-project-djangoapp
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
+volumes:
+  pgdata:
+    driver: local
+  django-media-volume:
+
+networks:
+  default:
+    name: helsinki

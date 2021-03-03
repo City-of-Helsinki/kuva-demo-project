@@ -4,8 +4,39 @@
 #
 #    pip-compile requirements.in
 #
-asgiref==3.3.1            # via django
-django-environ==0.4.5     # via -r requirements.in
-django==3.1.6             # via -r requirements.in
-pytz==2020.4              # via django
-sqlparse==0.4.1           # via django
+--no-binary psycopg2
+
+asgiref==3.3.1
+    # via django
+django-environ==0.4.5
+    # via -r requirements.in
+django-opentracing==1.1.0
+    # via -r requirements.in
+django==3.1.6
+    # via
+    #   -r requirements.in
+    #   django-opentracing
+jaeger-client==4.4.0
+    # via -r requirements.in
+opentracing==2.4.0
+    # via
+    #   django-opentracing
+    #   jaeger-client
+psycopg2==2.8.6
+    # via -r requirements.in
+pytz==2020.4
+    # via django
+six==1.15.0
+    # via
+    #   django-opentracing
+    #   thrift
+sqlparse==0.4.1
+    # via django
+threadloop==1.0.2
+    # via jaeger-client
+thrift==0.13.0
+    # via jaeger-client
+tornado==5.1.1
+    # via
+    #   jaeger-client
+    #   threadloop

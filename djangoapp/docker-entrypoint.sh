@@ -16,9 +16,9 @@ fi
 # Create admin user. Generate password if there isn't one in the environment variables
 if [[ "$CREATE_ADMIN_USER" = "1" ]]; then
     if [[ "$ADMIN_USER_PASSWORD" ]]; then
-      ./manage.py add_admin_user -u kuva-admin -p $ADMIN_USER_PASSWORD -e kuva-admin@hel.ninja
+      DJANGO_SUPERUSER_PASSWORD=$ADMIN_USER_PASSWORD DJANGO_SUPERUSER_USERNAME=kuva-admin DJANGO_SUPERUSER_EMAIL=kuva-admin@hel.ninja python /app/manage.py createsuperuser --noinput || true
     else
-      ./manage.py add_admin_user -u kuva-admin -e kuva-admin@hel.ninja
+      DJANGO_SUPERUSER_USERNAME=kuva-admin DJANGO_SUPERUSER_EMAIL=kuva-admin@hel.ninja python /app/manage.py createsuperuser --noinput || true
     fi
 fi
 
