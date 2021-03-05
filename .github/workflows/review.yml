@@ -27,8 +27,7 @@ env:
   K8S_LIMIT_RAM: 250Mi
   VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}
   VAULT_ADDR: ${{ secrets.VAULT_URL }}
-  VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-review
-  VAULT_KV_VERSION: 2
+  VAULT_KV_VERSION: "2"
 
 
 
@@ -73,5 +72,7 @@ jobs:
           DOCKER_BUILD_CONTEXT: ./${{ matrix.example }}
           DOCKER_IMAGE_NAME: ${{ matrix.example }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
+          PROJECT_NAME: ${{ github.event.repository.name }}-${{ matrix.example }}
+          VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-review
           K8S_SECRET_VERSION: ${{ github.sha }}
           VAULT_KV_SECRET_MOUNT_POINT: review
