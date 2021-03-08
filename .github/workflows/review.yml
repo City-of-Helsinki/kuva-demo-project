@@ -25,7 +25,7 @@ env:
   K8S_REQUEST_RAM: 200Mi
   K8S_LIMIT_CPU: 500m
   K8S_LIMIT_RAM: 250Mi
-  VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}
+  VAULT_JWT_PRIVATE_KEY: '${{ secrets.VAULT_ACCESS_PRIVATE_KEY }}'
   VAULT_ADDR: ${{ secrets.VAULT_URL }}
   VAULT_KV_VERSION: "2"
 
@@ -66,7 +66,7 @@ jobs:
           pr_number: ${{ github.event.inputs.pr_number }}
 
       - name: Deploy
-        uses: hi-fi/kolga-deploy-action@test
+        uses: andersinno/kolga-deploy-action@v2
         env:
           DOCKER_BUILD_SOURCE: ./${{ matrix.example }}/Dockerfile
           DOCKER_BUILD_CONTEXT: ./${{ matrix.example }}
