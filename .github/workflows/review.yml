@@ -73,6 +73,6 @@ jobs:
           DOCKER_IMAGE_NAME: ${{ matrix.example }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
           PROJECT_NAME: ${{ github.event.repository.name }}-${{ matrix.example }}
-          VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-review
+          VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-${{ matrix.example }}-review
           K8S_SECRET_VERSION: ${{ github.sha }}
           VAULT_KV_SECRET_MOUNT_POINT: review
