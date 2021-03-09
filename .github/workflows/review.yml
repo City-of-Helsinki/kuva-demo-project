@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: [ 'djangoapp' ]
+        dir: [ 'djangoapp' ]
     runs-on: ubuntu-latest
     name: Build
     steps:
@@ -44,9 +44,9 @@ jobs:
         if: github.event_name == 'pull_request' || github.event.inputs.build_required == 'true'
         uses: andersinno/kolga-build-action@v2
         env:
-          DOCKER_BUILD_SOURCE: ./${{ matrix.service }}/Dockerfile
-          DOCKER_BUILD_CONTEXT: ./${{ matrix.service }}
-          DOCKER_IMAGE_NAME: ${{ matrix.service }}
+          DOCKER_BUILD_SOURCE: ./${{ matrix.dir }}/Dockerfile
+          DOCKER_BUILD_CONTEXT: ./${{ matrix.dir }}
+          DOCKER_IMAGE_NAME: ${{ matrix.dir }}
 
   review:
     strategy:
@@ -80,7 +80,7 @@ jobs:
         env:
           DOCKER_BUILD_SOURCE: ./${{ matrix.dir }}/Dockerfile
           DOCKER_BUILD_CONTEXT: ./${{ matrix.dir }}
-          DOCKER_IMAGE_NAME: ${{ matrix.service }}
+          DOCKER_IMAGE_NAME: ${{ matrix.dir }}
           PROJECT_NAME: ${{ github.event.repository.name }}-${{ matrix.service }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
           K8S_SECRET_ALLOWED_HOSTS: "*"
