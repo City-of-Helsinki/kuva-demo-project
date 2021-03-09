@@ -16,12 +16,24 @@ Including another URLconf
 from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import path
-
+import requests
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+#
+# Example view to show tracing of requests
+#
+def pr_view(*args, **kwargs):
+  # Fetch a list of pull requests on the opentracing repository
+  github_url = "https://api.github.com/repos/opentracing/opentracing-python/pulls"
+  r = requests.get(github_url)
+
+  json = r.json()
+  pull_request_titles = map(lambda item: item['title'], json)
+
+  return HttpResponse('OpenTracing Pull Requests: ' + ', '.join(pull_request_titles), status="200")
 #
 # Kubernetes liveness & readiness probes
 #
@@ -33,4 +45,4 @@ def readiness(*args, **kwargs):
     return HttpResponse(status=200)
 
 
-urlpatterns += [path("healthz", healthz), path("readiness", readiness)]
+urlpatterns += [path("healthz", healthz), path("readiness", readiness), path("pr", pr_view)]

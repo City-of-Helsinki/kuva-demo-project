@@ -1,2 +1,9 @@
 Django > 3
 django-environ
+django_opentracing
+psycopg2
+--no-binary psycopg2
+django_opentracing
+jaeger_client
+requests
+opentracing_instrumentation
