@@ -26,6 +26,9 @@ env:
   K8S_LIMIT_CPU: 500m
   K8S_LIMIT_RAM: 250Mi
   K8S_REPLICACOUNT: 2
+  VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY_STAGING }}
+  VAULT_ADDR: ${{ secrets.VAULT_URL }}
+  VAULT_KV_VERSION: "2"
 
 jobs:
   build:
@@ -87,8 +90,7 @@ jobs:
           PROJECT_NAME: ${{ github.event.repository.name }}-${{ matrix.service }}
           K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING }}
           ENVIRONMENT_URL: https://${{ secrets.ENVIRONMENT_URL_STAGING }}
-          K8S_SECRET_ALLOWED_HOSTS: "*"
-          K8S_SECRET_DEBUG: 0
           K8S_SECRET_VERSION: ${{ github.sha }}
           K8S_SECRET_SECRET_KEY: ${{ secrets.DJANGOAPP_SECRET_KEY_STAGING }}
-          K8S_SECRET_JAEGER_AGENT_HOST: ${{ secrets.K8S_SECRET_JAEGER_AGENT_HOST_STAGING }}
+          VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-${{ matrix.service }}-staging
+          VAULT_KV_SECRET_MOUNT_POINT: staging

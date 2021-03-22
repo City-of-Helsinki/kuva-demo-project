@@ -83,7 +83,9 @@ jobs:
           DOCKER_IMAGE_NAME: ${{ matrix.dir }}
           PROJECT_NAME: ${{ github.event.repository.name }}-${{ matrix.service }}
           ENVIRONMENT_URL: https://${{ env.K8S_NAMESPACE }}.${{ env.BASE_DOMAIN }}
-          K8S_SECRET_ALLOWED_HOSTS: "*"
-          K8S_SECRET_DEBUG: 1
           K8S_SECRET_VERSION: ${{ github.sha }}
-          K8S_SECRET_JAEGER_AGENT_HOST: ${{ secrets.K8S_SECRET_JAEGER_AGENT_HOST_STAGING }}
+          VAULT_JWT_PRIVATE_KEY: ${{ secrets.VAULT_ACCESS_PRIVATE_KEY_REVIEW }}
+          VAULT_ADDR: ${{ secrets.VAULT_URL }}
+          VAULT_KV_VERSION: "2"
+          VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-${{ matrix.service }}-review
+          VAULT_KV_SECRET_MOUNT_POINT: review
