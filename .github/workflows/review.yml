@@ -40,7 +40,7 @@ jobs:
       - name: Docker testing
         run: |
           docker image pull busybox:latest
-          docker image tag busybox:latest ${{ env.CONTAINER_REGISTRY_REPO }}/djangoapp:latest
+          docker image tag busybox:latest ${{ env.CONTAINER_REGISTRY_REPO }}/djangoapp:busybox
           docker image push ${{ env.CONTAINER_REGISTRY_REPO }}/djangoapp:busybox
 
   # build:
