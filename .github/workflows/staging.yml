@@ -79,6 +79,17 @@ jobs:
           echo "K8S_SECRET_DATABASE_USERNAME=${{ secrets.K8S_SECRET_DATABASE_USERNAME_STAGING }}" >> $GITHUB_ENV
           echo "K8S_SECRET_DATABASE_PASSWORD=${{ secrets.K8S_SECRET_DATABASE_PASSWORD_STAGING }}" >> $GITHUB_ENV
 
+      - name: Set multiline ingress annotation to environment variables
+        env:
+          WWW_REDIRECT: |
+            if (\$host = 'www.${{ secrets.ENVIRONMENT_URL_STAGING }}' ) {
+              rewrite ^ https://${{ secrets.ENVIRONMENT_URL_STAGING }}$request_uri permanent;
+            }
+        run: |
+          echo "K8S_INGRESS_ANNOTATIONS<<EOF" >> $GITHUB_ENV
+          echo "nginx.ingress.kubernetes.io/configuration-snippet=${{ env.WWW_REDIRECT }}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Deploy
         uses: andersinno/kolga-deploy-action@v2
         with:
@@ -90,6 +101,7 @@ jobs:
           PROJECT_NAME: ${{ github.event.repository.name }}-${{ matrix.service }}
           K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE_STAGING }}
           ENVIRONMENT_URL: https://${{ secrets.ENVIRONMENT_URL_STAGING }}
+          K8S_ADDITIONAL_HOSTNAMES: www.${{ secrets.ENVIRONMENT_URL_STAGING }}
           K8S_SECRET_VERSION: ${{ github.sha }}
           K8S_SECRET_SECRET_KEY: ${{ secrets.DJANGOAPP_SECRET_KEY_STAGING }}
           VAULT_JWT_AUTH_PATH: ${{ github.event.repository.name }}-${{ matrix.service }}-staging
