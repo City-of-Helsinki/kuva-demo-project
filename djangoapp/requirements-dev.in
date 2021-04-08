@@ -25,3 +25,5 @@ requests-mock
 rope
 snapshottest
 yapf
+Pygments>=2.7.4
+PyYAML>=5.4
