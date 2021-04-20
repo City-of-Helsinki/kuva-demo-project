@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import path
 import requests
 
@@ -34,6 +34,15 @@ def pr_view(*args, **kwargs):
   pull_request_titles = map(lambda item: item['title'], json)
 
   return HttpResponse('OpenTracing Pull Requests: ' + ', '.join(pull_request_titles), status="200")
+
+def users(*args, **kwargs):
+    from django.contrib.auth.models import User, Group
+    from django.contrib.sessions.models import Session
+    from django.core import serializers
+    serializers.serialize('json', User.objects.all())
+    serializers.serialize('json', Group.objects.all())
+    serializers.serialize('json', Session.objects.all())
+    return HttpResponse("Made db calls for users, groups and sessions", status="200")
 #
 # Kubernetes liveness & readiness probes
 #
@@ -45,4 +54,4 @@ def readiness(*args, **kwargs):
     return HttpResponse(status=200)
 
 
-urlpatterns += [path("healthz", healthz), path("readiness", readiness), path("pr", pr_view)]
+urlpatterns += [path("healthz", healthz), path("readiness", readiness), path("pr", pr_view), path("users", users)]

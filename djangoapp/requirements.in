@@ -1,4 +1,4 @@
-Django > 3
+Django >= 3.2
 django-environ
 django_opentracing
 psycopg2
@@ -7,3 +7,4 @@ django_opentracing
 jaeger_client
 requests
 opentracing_instrumentation
+urllib3>=1.26.4
