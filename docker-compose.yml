@@ -22,6 +22,8 @@ services:
     environment:
       DATABASE_URL: postgres://kuva-demo-project:kuva-demo-project@kuva-demo-project-db/kuva-demo-project
       DATABASE_HOST: "kuva-demo-project-db"
+      JAEGER_AGENT_HTTP_PORT: 16686
+      DEV_SERVER: 1
     volumes:
       - ./djangoapp:/app
       - django-media-volume:/var/media/
