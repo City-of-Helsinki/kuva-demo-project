@@ -52,6 +52,7 @@ env = environ.Env(
     CSRF_TRUSTED_ORIGINS=(list, []),
     JAEGER_AGENT_HOST=(str, "jaeger"),
     JAEGER_AGENT_PORT=(int, 6831),
+    JAEGER_AGENT_HTTP_PORT=(int, 14271),
     JAEGER_SERVICE_NAME=(str, "kuva-demo-project-djangoapp"),
     JAEGER_AGENT_LOGGING=(bool, True),
 )
@@ -91,6 +92,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_opentracing',
+    'health_check',                             # required
+    'health_check.db',                          # stock Django health checkers
+    'health_check.cache',
+    'health_check.contrib.migrations',
+    'healthcheck',
 ]
 
 MIDDLEWARE = [
@@ -184,5 +190,6 @@ OPENTRACING_TRACING = django_opentracing.DjangoTracing()
 
 JAEGER_AGENT_HOST = env("JAEGER_AGENT_HOST")
 JAEGER_AGENT_PORT = env("JAEGER_AGENT_PORT")
+JAEGER_AGENT_HTTP_PORT = env("JAEGER_AGENT_HTTP_PORT")
 JAEGER_AGENT_LOGGING = env("JAEGER_AGENT_LOGGING")
 JAEGER_SERVICE_NAME = env("JAEGER_SERVICE_NAME")

@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.http import HttpResponse, JsonResponse
-from django.urls import path
+from django.urls import include, path
 import requests
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('healthz/', include('health_check.urls')),
+    path('readiness', include('health_check.urls')),
 ]
 
 #
@@ -54,4 +56,4 @@ def readiness(*args, **kwargs):
     return HttpResponse(status=200)
 
 
-urlpatterns += [path("healthz", healthz), path("readiness", readiness), path("pr", pr_view), path("users", users)]
+urlpatterns += [path("pr", pr_view), path("users", users)]

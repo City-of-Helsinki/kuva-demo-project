@@ -8,3 +8,4 @@ jaeger_client
 requests
 opentracing_instrumentation
 urllib3>=1.26.4
+django-health-check
