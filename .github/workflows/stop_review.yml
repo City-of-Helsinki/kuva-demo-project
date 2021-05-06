@@ -23,8 +23,7 @@ jobs:
           pr_number: ${{ github.event.inputs.pr_number }}
 
       - name: Remove Review-Services
-        if: matrix.database
-        uses: City-of-Helsinki/review-services-action@create_and_drop_database
+        uses: City-of-Helsinki/review-services-action@main
         with:
           database: ${{ env.K8S_NAMESPACE }}
           namespace: ${{ env.K8S_NAMESPACE }}
